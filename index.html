@@ -11,23 +11,30 @@
 <meta property="og:description" content="A mythic action game. Play free in your browser.">
 <meta name="theme-color" content="#0c1217">
 <link rel="icon" type="image/webp" href="assets/icon.webp">
-<link rel="preload" as="image" href="assets/hero.webp">
+<!-- the hero picture a screen will show: the widened painting on a big screen wider than 3:2 (.wide), else the original -->
+<link rel="preload" as="image" href="assets/hero.webp" media="not all and (min-width:1087px) and (min-aspect-ratio:3/2)">
+<link rel="preload" as="image" href="assets/hero-wide.webp" media="(min-width:1087px) and (min-aspect-ratio:3/2)">
 <link rel="preload" as="font" type="font/woff2" href="assets/cinzel-latin.woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=d948a53439">
-<script src="site-scale.js?v=0af6f8be77"></script>
-<script src="site.js?v=44f47b78f6" defer></script>
+<link rel="stylesheet" href="site.css?v=ddd1824c63">
+<script src="site-scale.js?v=f162fa0902"></script>
+<script src="site.js?v=1a9bf1af8d" defer></script>
 </head>
 <body>
 <a class="skip" href="#champions">Skip to content</a>
 <header class="site-header">
+ <!-- the sticky bar's small wordmark, the painted title, once the big title has scrolled away (WEBSITE-V10-PICKS-20261026);
+      it leads back to the top -->
+ <a class="wordmark tap-pad" href="#" tabindex="-1" aria-hidden="true" aria-label="Trials of Terror, back to the top"><img src="assets/title.webp" width="594" height="262" alt=""></a>
  <nav aria-label="Main">
-  <!-- not set up yet: greyed out, not clickable, out of the tab order (the user, 2026-10-24) -->
+  <!-- Community: the user's Discord server (COMMUNITY-DISCORD-INVITE-20261025), in a new tab. Log In and Sign Up aren't set
+       up yet: greyed out, not clickable, out of the tab order (the user, 2026-10-24) -->
   <!-- two groups (the user: the items should read as separate functions): navigation, then the account actions -->
   <span class="nav-group">
-   <span class="nav-item off" aria-disabled="true">Community<span class="visually-hidden"> (not available yet)</span></span>
+   <a class="nav-item live tap-pad" href="https://discord.gg/RAyAtkUa9d" target="_blank" rel="noopener noreferrer">Community<span class="visually-hidden"> (our Discord server, opens in a new tab)</span></a>
    <span class="nav-sep" aria-hidden="true">◆</span>
    <a class="nav-item live tap-pad" href="#updates">Updates</a>
   </span>
+  <span class="nav-sep" aria-hidden="true">◆</span>
   <span class="account-links">
    <span class="nav-item off" aria-disabled="true">Log In<span class="visually-hidden"> (not available yet)</span></span>
    <span class="nav-item pill off" aria-disabled="true">Sign Up<span class="visually-hidden"> (not available yet)</span></span>
@@ -50,11 +57,11 @@
   <div class="title-drops" aria-hidden="true"><i class="drop d1"></i><i class="drop d2"></i><i class="drop d3"></i></div>
   <div class="hero-actions">
    <a class="main-play tap-pad" href="https://play.trialsofterror.com/"><span class="play-label">PLAY NOW</span><span class="play-context">In your browser</span></a>
-   <p class="adventure-line">Your adventure. Your way.</p>
+   <p class="adventure-line"><span>Your adventure.</span> <span>Your way.</span></p>
    <ul class="platforms" aria-label="Where we're headed: phone, PC and console. Today the game plays in your browser.">
-    <li><svg viewBox="0 0 34 32" aria-hidden="true"><rect x="10" y="3" width="14" height="26" rx="3"/><path d="M15 6h4M16 26h2"/></svg>Phone</li>
-    <li><svg viewBox="0 0 34 32" aria-hidden="true"><rect x="3" y="5" width="28" height="19" rx="2"/><path d="M17 24v5M11 29h12M4 20h26"/></svg>PC</li>
-    <li><svg viewBox="0 0 34 32" aria-hidden="true"><path d="M10 9h14c4 0 5 4 6 8l1 7c.4 3-2 4-4 2l-5-5H12l-5 5c-2 2-4.4 1-4-2l1-7c1-4 2-8 6-8Z"/><path d="M10 13v7M6.5 16.5h7"/><circle cx="24" cy="14" r=".8"/><circle cx="27" cy="17" r=".8"/></svg>Console</li>
+    <li><svg viewBox="0 0 34 32" aria-hidden="true"><defs><linearGradient id="cut-gold" x1="0" y1="0" x2=".65" y2="1"><stop stop-color="#f2e4be"/><stop offset=".38" stop-color="#dcc18b"/><stop offset=".52" stop-color="#ab7f3c"/><stop offset=".72" stop-color="#e5ca91"/><stop offset="1" stop-color="#856330"/></linearGradient></defs><path d="M10 2H24L26 4V28L24 30H10L8 28V4Z M12 7V24H22V7Z M15 26V28H19V26Z"/></svg>Phone</li>
+    <li><svg viewBox="0 0 34 32" aria-hidden="true"><path d="M3 4H31L33 6V23L31 25H20V28H25V30H9V28H14V25H3L1 23V6Z M5 8V20H29V8Z"/></svg>PC</li>
+    <li><svg viewBox="0 0 34 32" aria-hidden="true"><path d="M10 8H24L28 11L32 24L29 28H26L21 23H13L8 28H5L2 24L6 11Z M9 12V15H6V18H9V21H12V18H15V15H12V12Z M23 12V15H26V12Z M26 17V20H29V17Z"/></svg>Console</li>
    </ul>
   </div>
  </section>
@@ -62,7 +69,7 @@
  <section id="champions" class="champions" aria-labelledby="champions-title">
   <!-- the heading in Cinzel (self-hosted, SIL OFL: assets/cinzel-OFL.txt), framed by fading gold hairlines (the user: no diamonds here) -->
   <h2 id="champions-title"><span class="words"><span class="gold">Who faces the </span><span class="gold terror">terror?</span></span></h2>
-  <p class="champions-goal">Unlock every Champion<span class="sep"><span class="visually-hidden">. </span><span aria-hidden="true">◆</span></span>Conquer every Trial<span class="br" aria-hidden="true"></span><span class="sep"><span class="visually-hidden">. </span><span aria-hidden="true">◆</span></span>Race to reset the ladder<span class="visually-hidden">.</span><span class="sep end" aria-hidden="true">◆</span></p>
+  <p class="champions-goal">Unlock every Champion<span class="sep"><span class="visually-hidden">. </span><span aria-hidden="true">◆</span></span>Conquer every Trial<span class="sep at-br"><span class="visually-hidden">. </span><span aria-hidden="true">◆</span></span><span class="br" aria-hidden="true"></span>Race to reset the ladder<span class="visually-hidden">.</span></p>
   <!-- each card's role line and description: approved by the user 2026-10-25 (LandingVision14/champion-descriptions.md) -->
   <!-- the row grows: ‹ › (and a swipe, and the arrow keys) step through every Champion, five shown at a time -->
   <div class="row">
@@ -71,15 +78,15 @@
   <ul class="squad">
    <li class="card c-oracle"><button type="button" class="card-open" aria-expanded="false" aria-controls="champion-info" aria-label="Oracle, locked" data-champion="oracle" data-name="Oracle" data-role="Read the stars. Wield their power." data-state="locked" data-desc="With staff in hand, the Oracle reaches into the constellations and draws their power into battle. Calm amid the chaos, she meets the darkness with the brilliance of the stars."><img src="assets/champion-oracle.webp" width="285" height="490" alt="" loading="lazy" draggable="false"><span class="caption"><span class="name">Oracle</span><span class="state"><svg class="lock" viewBox="0 0 16 18" aria-hidden="true"><path d="M4 7V4a4 4 0 0 1 8 0v3M2 7h12v10H2z"/></svg>Locked</span></span></button></li>
    <li class="card c-seeker"><button type="button" class="card-open" aria-expanded="false" aria-controls="champion-info" aria-label="Seeker, locked" data-champion="seeker" data-name="Seeker" data-role="Keen aim. Wild instinct." data-state="locked" data-desc="The Seeker moves with purpose, weaving nature&#x27;s touch into every arrow. With her faithful companion beside her, she follows the trail wherever the darkness leads."><img src="assets/champion-seeker.webp" width="285" height="490" alt="" loading="lazy" draggable="false"><span class="caption"><span class="name">Seeker</span><span class="state"><svg class="lock" viewBox="0 0 16 18" aria-hidden="true"><path d="M4 7V4a4 4 0 0 1 8 0v3M2 7h12v10H2z"/></svg>Locked</span></span></button></li>
-   <li class="card c-warrior start"><button type="button" class="card-open" aria-expanded="false" aria-controls="champion-info" aria-label="Warrior, unlocked" data-champion="warrior" data-name="Warrior" data-role="First into darkness." data-state="start" data-desc="A sword to strike. A shield to endure. The Warrior begins your journey with both, but it’s your courage that carries him forward."><img src="assets/champion-warrior.webp" width="285" height="490" alt="" loading="lazy" draggable="false"><span class="caption"><span class="name">Warrior</span><span class="state unlocked"><svg class="lock" viewBox="0 0 16 18" aria-hidden="true"><path d="M4 7V4a4 4 0 0 1 7.6-1.7M2 7h12v10H2z"/></svg>Unlocked</span></span></button></li>
+   <li class="card c-warrior start"><button type="button" class="card-open" aria-expanded="false" aria-controls="champion-info" aria-label="Warrior, unlocked" data-champion="warrior" data-name="Warrior" data-role="First into darkness." data-state="start" data-desc="A sword to strike. A shield to endure. The Warrior begins your journey with both, but it’s your courage that carries him forward."><img src="assets/champion-warrior.webp" srcset="assets/champion-warrior.webp 285w, assets/champion-warrior-570.webp 570w, assets/champion-warrior-855.webp 855w" sizes="21.3vw" width="285" height="490" alt="" loading="lazy" draggable="false"><span class="caption"><span class="name">Warrior</span><span class="state unlocked"><svg class="lock" viewBox="0 0 16 18" aria-hidden="true"><path d="M4 7V4a4 4 0 0 1 7.6-1.7M2 7h12v10H2z"/></svg>Unlocked</span></span></button></li>
    <li class="card c-warden"><button type="button" class="card-open" aria-expanded="false" aria-controls="champion-info" aria-label="Warden, locked" data-champion="warden" data-name="Warden" data-role="Hold the line. Sound the call." data-state="locked" data-desc="With hammer and shield, the Warden stands firm where others would give ground. His blows resound and his battle cries rally those beside him, daring the enemy to come closer."><img src="assets/champion-warden.webp" width="285" height="490" alt="" loading="lazy" draggable="false"><span class="caption"><span class="name">Warden</span><span class="state"><svg class="lock" viewBox="0 0 16 18" aria-hidden="true"><path d="M4 7V4a4 4 0 0 1 8 0v3M2 7h12v10H2z"/></svg>Locked</span></span></button></li>
    <li class="card c-oathkeeper"><button type="button" class="card-open" aria-expanded="false" aria-controls="champion-info" aria-label="Oathkeeper, locked" data-champion="oathkeeper" data-name="Oathkeeper" data-role="Strike fast. Risk everything." data-state="locked" data-desc="The Oathkeeper drives forward with rapid spear strikes, then unleashes his power across the surrounding ranks. His strength lies in the assault—stay on the offensive, because his defenses leave little room for error."><img src="assets/champion-oathkeeper.webp" width="285" height="490" alt="" loading="lazy" draggable="false"><span class="caption"><span class="name">Oathkeeper</span><span class="state"><svg class="lock" viewBox="0 0 16 18" aria-hidden="true"><path d="M4 7V4a4 4 0 0 1 8 0v3M2 7h12v10H2z"/></svg>Locked</span></span></button></li>
    <!-- the mystery Champion: a placeholder until BRAIN's silhouette card lands; no name, no text but its lock -->
-   <li class="card c-mystery" hidden><button type="button" class="card-open" aria-expanded="false" aria-controls="champion-info" aria-label="A Champion yet to be revealed, locked" data-champion="mystery" data-name="???" data-role="" data-state="locked" data-desc=""><img src="assets/champion-mystery.webp" width="285" height="490" alt="" loading="lazy" draggable="false"><span class="caption"><span class="name">???</span><span class="state"><svg class="lock" viewBox="0 0 16 18" aria-hidden="true"><path d="M4 7V4a4 4 0 0 1 8 0v3M2 7h12v10H2z"/></svg>Locked</span></span></button></li>
+   <li class="card c-mystery" hidden><button type="button" class="card-open" aria-expanded="false" aria-controls="champion-info" aria-label="A Champion yet to be revealed, locked" data-champion="mystery" data-name="???" data-role="" data-state="locked" data-desc=""><img src="assets/champion-mystery.webp" srcset="assets/champion-mystery.webp 285w, assets/champion-mystery-570.webp 570w, assets/champion-mystery-855.webp 855w" sizes="21.3vw" width="285" height="490" alt="" loading="lazy" draggable="false"><span class="caption"><span class="name">???</span><span class="state"><svg class="lock" viewBox="0 0 16 18" aria-hidden="true"><path d="M4 7V4a4 4 0 0 1 8 0v3M2 7h12v10H2z"/></svg>Locked</span></span></button></li>
    <!-- the chosen Champion, in the site's own style: art-backed like the news cards, inside the hairline frame -->
    <li class="reveal champion-info" id="champion-info" role="region" aria-labelledby="ci-name" hidden><div class="reveal-inner"><div class="ci-card">
     <button type="button" class="ci-close tap-pad" aria-label="Close" aria-controls="champion-info">×</button>
-    <img class="ci-art" id="ci-art" src="assets/champion-warrior.webp" width="285" height="490" alt="">
+    <div class="ci-art"><img id="ci-art" src="assets/champion-warrior.webp" sizes="44vw" width="285" height="490" alt=""></div>
     <div class="ci-body">
      <p class="ci-badge" id="ci-locked"><svg class="lock" viewBox="0 0 16 18" aria-hidden="true"><path d="M4 7V4a4 4 0 0 1 8 0v3M2 7h12v10H2z"/></svg>Locked</p>
      <p class="ci-badge open" id="ci-start"><svg class="lock" viewBox="0 0 16 18" aria-hidden="true"><path d="M4 7V4a4 4 0 0 1 7.6-1.7M2 7h12v10H2z"/></svg>Unlocked</p>
@@ -99,9 +106,9 @@
  <section class="gameplay" aria-labelledby="gameplay-title">
   <h2 id="gameplay-title">Terror awaits</h2>
   <ul class="teasers">
-   <li class="ember"><div class="teaser-frame"><img src="assets/teaser-combat.webp" width="960" height="540" alt="Concept art: the Warrior cuts through a demon of red corruption" loading="lazy"><h3>Break the <b>corruption</b></h3></div></li>
-   <li class="cold"><div class="teaser-frame"><img src="assets/teaser-unknown.webp" width="960" height="540" alt="Concept art: the Warrior steps into a cold blue stone passage" loading="lazy"><h3>Face the <b>unknown</b></h3></div></li>
-   <li class="gold"><div class="teaser-frame"><img src="assets/teaser-trial.webp" width="960" height="540" alt="Concept art: the Warrior stands before the Urn as golden statues judge him" loading="lazy"><h3>Stand your <b>Trial</b></h3></div></li>
+   <li class="ember"><div class="teaser-frame"><img src="assets/teaser-combat.webp" srcset="assets/teaser-combat.webp 960w, assets/teaser-combat-1672.webp 1672w" sizes="29.4vw" width="960" height="540" alt="Concept art: the Warrior cuts through a demon of red corruption" loading="lazy"><h3>Break the <b>corruption</b></h3></div></li>
+   <li class="cold"><div class="teaser-frame"><img src="assets/teaser-unknown.webp" srcset="assets/teaser-unknown.webp 960w, assets/teaser-unknown-1672.webp 1672w" sizes="29.4vw" width="960" height="540" alt="Concept art: the Warrior steps into a cold blue stone passage" loading="lazy"><h3>Face the <b>unknown</b></h3></div></li>
+   <li class="gold"><div class="teaser-frame"><img src="assets/teaser-trial.webp" srcset="assets/teaser-trial.webp 960w, assets/teaser-trial-1672.webp 1672w" sizes="29.4vw" width="960" height="540" alt="Concept art: the Warrior stands before the Urn as golden statues judge him" loading="lazy"><h3>Stand your <b>Trial</b></h3></div></li>
   </ul>
  </section>
 

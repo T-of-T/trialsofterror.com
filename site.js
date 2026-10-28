@@ -10,8 +10,20 @@
   const header = $('.site-header');
   const mini = $('.mini-play');
   const play = $('.main-play');
-  const solid = () => header.classList.toggle('solid', window.scrollY > 8);
+  // the bar's wordmark shows once the big title has gone under the bar
+  const mark = $('.wordmark');
+  const title = $('.hero-title');
+  const solid = () => {
+    header.classList.toggle('solid', window.scrollY > 8);
+    if (!mark || !title) return;
+    const past = title.getBoundingClientRect().bottom < header.getBoundingClientRect().bottom;
+    if (past === header.classList.contains('past-title')) return;
+    header.classList.toggle('past-title', past);
+    mark.setAttribute('aria-hidden', String(!past));
+    mark.tabIndex = past ? 0 : -1;
+  };
   window.addEventListener('scroll', solid, { passive: true });
+  window.addEventListener('resize', solid);
   solid();
   if (mini && play && 'IntersectionObserver' in window) {
     new IntersectionObserver(([entry]) => {
@@ -27,10 +39,36 @@
     clearTimeout(el._t);
     el.hidden = false;
     requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('open')));
-    // bring it into view if it opened below the screen's edge
+    // once it has finished growing (the open starts two frames later and runs OPEN_MS), bring the whole of it into view
+    // between the fixed header and the screen's bottom, with clear room at both (12 design
+    // px, scaled). A Champion's panel brings its card row too: if the row and the panel don't both fit, the row shrinks in
+    // place until they do (never a row of faces cut by the header). If it is still taller than the space, its top wins
     setTimeout(() => {
-      if (el.getBoundingClientRect().bottom > window.innerHeight) el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-    }, OPEN_MS + 20);
+      const room = 12 * (parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--z')) || 1);
+      const head = $('.site-header').getBoundingClientRect().bottom + room;
+      const space = window.innerHeight - room - head;
+      let top = el.getBoundingClientRect().top;
+      if (el === strip) {
+        const row = squad.getBoundingClientRect();
+        const panel = el.getBoundingClientRect();
+        // the row (with its gap to the panel) is everything in the squad above the panel
+        if (panel.bottom - row.top > space) {
+          let s = Math.max(0.55, Math.min(1, (space - panel.height) / (panel.top - row.top)));
+          champions.style.setProperty('--row-s', String(s));
+          champions.classList.add('compact');
+          // the gaps don't all shrink with the cards: measure once more and correct
+          const above = el.getBoundingClientRect().top - squad.getBoundingClientRect().top;
+          s = Math.max(0.55, s * (space - panel.height) / above);
+          champions.style.setProperty('--row-s', String(s));
+        }
+        top = squad.getBoundingClientRect().top;
+      }
+      const r = el.getBoundingClientRect();
+      let dy = Math.max(0, r.bottom + room - window.innerHeight);
+      if (top - dy < head) dy = top - head;
+      if (r.top - dy < head) dy = r.top - head;
+      if (Math.abs(dy) > 1) window.scrollBy({ top: dy, behavior: 'smooth' });
+    }, OPEN_MS + 80);
   }
   function hide(el) {
     el.classList.remove('open');
@@ -44,7 +82,9 @@
   function fillStrip(btn) {
     const d = btn.dataset;
     const art = $('#ci-art');
-    art.src = $('img', btn).getAttribute('src');
+    const pic = $('img', btn);
+    art.srcset = pic.getAttribute('srcset') || '';
+    art.src = pic.getAttribute('src');
     $('#ci-name').textContent = d.name;
     // the role line and description, as the user approved them (2026-10-25)
     $('#ci-role').textContent = d.role;
@@ -62,6 +102,7 @@
   // A tap, ‹ ›, the arrow keys and a sideways drag all turn the same ring, so a card always enters at one edge as another
   // leaves the other: never a gap, never a card jumping across in view. Closing a panel turns it home, the Warrior centred.
   const squad = $('.squad');
+  const champions = $('.champions');
   const still = window.matchMedia('(prefers-reduced-motion: reduce)');
   const HOME = $$('.squad .card');
   const N = HOME.length;
@@ -154,6 +195,8 @@
     chosen.parentElement.classList.remove('selected');
     chosen = null;
     hide(strip);
+    // the row returns to its full size once the panel has closed
+    setTimeout(() => champions.classList.remove('compact'), OPEN_MS);
   }
   function home() {
     let d = mod(WARRIOR - (ring ? mod(centreAt - Math.round(ring.target), N) : centreAt), N);

@@ -4,16 +4,23 @@
    small to read or tap, max(desktop, calc(real-minimum / var(--z))) keeps the real minimum: text 12-13 px, tap targets 44 px.
    Nothing opens a window: reveals open in place, full width below their row (site.js). What isn't set up yet is greyed out and
    not clickable (.off): a quieter version of the same element, never "soon" wording. */
-:root{--z:1;--bg:#0c1217;--page:#090e12;--text:#eee7da;--muted:#aab0b2;--gold:#e7c98d;--gold-soft:#e5ce98;--line:#b99a6633;
+:root{--z:1;--bg:#0c1217;--text:#eee7da;--muted:#aab0b2;--gold:#e7c98d;--gold-soft:#e5ce98;--line:#b99a6633;
  --tap:max(44px,calc(44px / var(--z)));--gutter:38px;
  /* the site's quiet hairline (the user likes "the grey/gold outline"): gold-grey, fading at both ends, at least 1 real pixel */
  --hair-w:max(1px,calc(.75px / var(--z)));--hair-c:#c3a46f55}
 /* Cinzel, self-hosted (SIL Open Font License, assets/cinzel-OFL.txt): the section headings */
 @font-face{font-family:'Cinzel';src:url(assets/cinzel-latin.woff2) format('woff2');font-weight:400 900;font-style:normal;font-display:swap}
+/* Gelasio, self-hosted (SIL Open Font License, assets/gelasio-OFL.txt; WEBSITE-GELASIO-FONT-20261026): Georgia's metric twin,
+   listed after Georgia, so screens with Georgia keep the approved look and never fetch it; Android and Linux get Georgia's
+   widths instead of the wider Noto Serif. Latin only, like Google's latin subset */
+@font-face{font-family:'Gelasio';src:url(assets/gelasio-latin.woff2) format('woff2');font-weight:400 700;font-style:normal;font-display:swap;
+ unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Gelasio';src:url(assets/gelasio-italic-latin.woff2) format('woff2');font-weight:400;font-style:italic;font-display:swap;
+ unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:max(84px,calc(56px / var(--z)))}
 /* an explicit 100% width: a percentage resolves before the zoom, so the zoomed page fills the screen (auto would shrink it twice) */
-body{margin:0;zoom:var(--z);width:100%;background:var(--page);color:var(--text);font-family:Georgia,'Times New Roman',serif}
+body{margin:0;zoom:var(--z);width:100%;background:var(--bg);color:var(--text);font-family:Georgia,'Gelasio','Times New Roman',serif}
 button{font:inherit;color:inherit;cursor:pointer}
 img{display:block;max-width:100%}
 ul{list-style:none;margin:0;padding:0}
@@ -31,10 +38,10 @@ a:focus-visible,button:focus-visible{outline:max(2px,calc(2px / var(--z))) solid
 /* The header: over the hero art; a bar with a compact Play once the main Play has scrolled away */
 .site-header{position:fixed;z-index:20;top:0;left:0;right:0;margin:0 auto;width:min(1086px,calc(100vw / var(--z)));height:max(76px,calc(30px / var(--z)));
  display:flex;align-items:center;justify-content:flex-end;padding:0 var(--gutter);transition:background .2s,box-shadow .2s}
-.site-header nav{display:flex;align-items:center;gap:max(25px,calc(10px / var(--z)))}
+.site-header nav{display:flex;align-items:center;gap:max(12px,calc(6px / var(--z)))}
 /* the header keeps the design's scale on phones (the user: it took up a lot of room): small text; only the live link needs a
    44 px target, and gets it invisibly (.tap-pad) */
-.nav-item{position:relative;display:inline-flex;align-items:center;min-height:44px;color:#e5e0d5;font:max(16px,calc(10px / var(--z))) Georgia,serif;
+.nav-item{position:relative;display:inline-flex;align-items:center;min-height:44px;color:#e5e0d5;font:max(16px,calc(10px / var(--z))) Georgia,'Gelasio',serif;
  text-decoration:none;text-shadow:0 1px 5px #000}
 a.nav-item:hover{color:#f8d38b}
 /* navigation: text links with a small gold diamond between them; the live link's thin gold underline slides in on hover or focus */
@@ -45,56 +52,119 @@ a.nav-item:hover{color:#f8d38b}
 .nav-item.live:hover::after,.nav-item.live:focus-visible::after{transform:scaleX(1)}
 /* account: Log In as text, Sign Up as a small outlined gold pill (dimmed and unclickable while accounts aren't set up) */
 .nav-item.pill{min-height:0;padding:.28em .95em;border:max(1px,calc(1px / var(--z))) solid #d9b878;border-radius:999px;color:var(--gold);line-height:1.2}
-.account-links{display:flex;align-items:center;gap:max(20px,calc(9px / var(--z)));padding-left:max(25px,calc(10px / var(--z)));border-left:max(2px,calc(1.5px / var(--z))) solid #cdb27d}
+.account-links{display:flex;align-items:center;gap:max(20px,calc(9px / var(--z)))}
+.site-header nav{position:relative;isolation:isolate}
+.site-header nav::before{content:'';position:absolute;z-index:-1;inset:-18px -64px;pointer-events:none;border-radius:50%;
+ background:radial-gradient(closest-side,#05080cd9 0%,#05080ca6 55%,transparent);transition:opacity .2s}
+.site-header.solid nav::before,.site-header.scrolled nav::before{opacity:0}
 .nav-item.off{opacity:.45;cursor:default}
 .mini-play{display:none}
-.site-header.solid,.site-header.scrolled{background:#0b1015f5;box-shadow:0 1px #ad865d44}
-.scrolled .mini-play{position:relative;display:flex;align-items:center;min-height:max(44px,calc(24px / var(--z)));padding:0 20px;border:1px solid #c29c5e;background:#31271a;color:#f3e3c2;
- font:700 max(13px,calc(10px / var(--z))) Georgia,serif;letter-spacing:1px;text-decoration:none}
+.site-header.solid,.site-header.scrolled{background:#0b1015;box-shadow:0 1px #ad865d44}
+/* on a big screen (.wide) the header's links stay over the column, and its bar runs the full width of the screen */
+.wide .site-header.solid,.wide .site-header.scrolled{background:none;box-shadow:none}
+.wide .site-header.solid::before,.wide .site-header.scrolled::before{content:'';position:absolute;z-index:-1;inset:0 -100vmax;
+ background:#0b1015;box-shadow:0 1px #ad865d44;pointer-events:none}
+.scrolled .mini-play{position:relative;display:flex;margin-left:max(13px,calc(4px / var(--z)));align-items:center;min-height:max(44px,calc(24px / var(--z)));padding:0 20px;border:1px solid #c29c5e;background:#31271a;color:#f3e3c2;
+ font:700 max(13px,calc(10px / var(--z))) Georgia,'Gelasio',serif;letter-spacing:1px;text-decoration:none}
 .scrolled .mini-play:hover{background:#45361f}
+/* the compact PLAY NOW in the hero plate's carved gold, so the two read as one button */
+.scrolled .mini-play{border-color:#2a1503;border-radius:2px;color:#1e0f03;text-shadow:0 1px 0 #ffe9b099;
+ background:linear-gradient(180deg,#fff8c0 0%,#ffeb86 18%,#ffd866 40%,#f2b846 62%,#d4912c 84%,#ab6c1c 100%);
+ box-shadow:inset 0 1px 0 #fffbe0,inset 0 0 0 1px #ffe6a066,inset 0 -2px 0 #5a2c0899,0 1px 0 #1a0c03}
+.scrolled .mini-play:hover{background:linear-gradient(180deg,#fff8c0 0%,#ffeb86 18%,#ffd866 40%,#f2b846 62%,#d4912c 84%,#ab6c1c 100%);filter:brightness(1.06)}
+/* the wordmark (WEBSITE-V10-PICKS-20261026): the painted title, small, in the title's warm gold, at the bar's left once the
+   big title has gone under the bar (site.js); it fades in and leads back to the top */
+.site-header{gap:max(10px,calc(6px / var(--z)))}
+.wordmark{position:relative;flex:none;display:flex;align-items:center;margin-right:auto;opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
+.past-title .wordmark{opacity:1;visibility:visible}
+.wordmark img{width:auto;height:max(48px,calc(22px / var(--z)));
+ filter:sepia(1) saturate(1.9) hue-rotate(-12deg) brightness(1) contrast(1.15) drop-shadow(0 1px 0 #1a0c03)}
+.wordmark:hover img{filter:sepia(1) saturate(1.9) hue-rotate(-12deg) brightness(1.16) contrast(1.15) drop-shadow(0 1px 0 #1a0c03)}
+/* on a phone held upright the bar's links are 12 px (the readable minimum) and the scrolled bar's gaps a little tighter, so
+   the links and the compact PLAY NOW stay on one line down to 360 px; nothing wraps. That leaves no room for the wordmark
+   there (at 360 px the links and PLAY NOW take 331 of the bar's 335 px), so it shows on PC and phones held sideways only */
+.site-header nav *{white-space:nowrap}
+.fit .wordmark{display:none}
+/* without the wordmark the scrolled bar's links and PLAY NOW sit centred, the same room at both ends (right-packed, a 390 phone
+   left about 43 px empty at the left against 14 at the right: it read as a missing logo); at 360 they fill the bar */
+.fit .site-header.scrolled{justify-content:center}
+.fit .nav-item,.fit .scrolled .mini-play{font-size:calc(12px / var(--z))}
+/* the bar's 44 px tap areas start at the screen's top edge instead of reaching past it (the bar is 30 px tall on a phone) */
+.fit .site-header .tap-pad::before{top:calc(50% - 15px / var(--z));transform:translateX(-50%)}
+/* the title layer's faint edge pixels (invisible over the hero's sky) are clipped off on the bar */
+.wordmark img{clip-path:inset(3% 2% 0 0)}
+.fit .site-header.scrolled nav,.fit .scrolled .nav-group{gap:calc(4px / var(--z))}
+.fit .scrolled .account-links{gap:calc(6px / var(--z))}
+/* PLAY NOW's label 6 px inside its pill (the v14 review: about 5 at 360) */
+.fit .scrolled .mini-play{margin-left:calc(3px / var(--z));padding:0 calc(6px / var(--z))}
+/* PLAY NOW sits 3 px down the bar inside a 1 px border, so its pad is lifted by both to start at the screen's top edge too
+   (centred on the button it began 0.7 px above the screen, leaving 43.3 px to tap) */
+.fit .scrolled .mini-play.tap-pad::before{top:calc(-3px / var(--z) - 1px)}
 
 main{width:min(1086px,100%);margin:0 auto;background:var(--bg)}
 
 /* The hero: the whole approved painting, its title painted in */
 .hero{position:relative;aspect-ratio:1086/724;background:url(assets/hero.webp) center top/100% 100% no-repeat}
-.hero::after{content:'';position:absolute;inset:auto 0 0;height:90px;background:linear-gradient(transparent,var(--bg));pointer-events:none}
-/* the hero block keeps the design's own size and place on every screen, left of the Warrior (the user: PLAY NOW hid him);
+/* a big screen (.wide, B): the hero stays the approved 1086 x 724 box in the column, and BRAIN's widened painting
+   (assets/hero-wide.webp: the original, pixel-identical, at its centre, with painted side scenery) runs out past the
+   column on both sides to the screen's edges (--side, from site-scale.js), at most its own 326.7 px a side (2460 / 1536 of
+   the box), so nothing reaches past the screen. The side scenery needs the user's OK before it goes live
+   (WEBSITE-BIG-SCREEN-B-AND-POLISH-20261025; fallback A). Only that picture loads on a big screen. */
+.wide body{overflow-x:clip}
+.wide .hero{--reach:calc(-1 * min(326.67px, var(--side)));background-image:none;isolation:isolate}
+.wide .hero::before{content:'';position:absolute;z-index:-1;top:0;bottom:0;left:var(--reach);right:var(--reach);pointer-events:none;
+ background:url(assets/hero-wide.webp) center top/1739.33px 724px no-repeat}
+.wide .hero::after{left:var(--reach);right:var(--reach)}
+/* the hero's foot fades into the page: 64 px, eased, so the painting's foreground stays (the v9 review: 90 px buried it; the
+   fade is the same share of the hero at every size) */
+.hero::after{content:'';position:absolute;inset:auto 0 0;height:64px;background:linear-gradient(transparent,#0c121799 50%,var(--bg));pointer-events:none}
+/* the hero block keeps the design's own size on every screen, left of the Warrior (the user: PLAY NOW hid him), 10 px left of
+   the design so its tagline and labels clear his shield and the plate lines up with "OF";
    PLAY NOW stays easy to tap through its invisible 44 px area */
-.hero-actions{position:absolute;z-index:2;left:68px;top:330px;width:260px;display:flex;flex-direction:column;align-items:center;text-align:center}
+.hero-actions{position:absolute;z-index:2;left:58px;top:330px;width:260px;display:flex;flex-direction:column;align-items:center;text-align:center}
 .main-play{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.25em;flex:none;width:260px;
  height:83px;border:1px solid #f3db9a;border-radius:2px;background:linear-gradient(145deg,#e0c78d,#b78e45);
  color:#211a10;text-decoration:none;box-shadow:inset 0 0 0 3px #73501c33,0 5px 18px #0009;transition:filter .16s,transform .1s}
 .main-play:hover{filter:brightness(1.12)}
 .main-play:active{transform:translateY(2px);filter:brightness(.96)}
 .main-play:focus-visible{outline-offset:5px}
-.play-label{font:700 max(24px,calc(9px / var(--z))) Georgia,serif;letter-spacing:.07em;line-height:1}
+.play-label{font:700 max(24px,calc(9px / var(--z))) Georgia,'Gelasio',serif;letter-spacing:.07em;line-height:1}
 .play-context{font:max(13px,calc(6px / var(--z))) Arial,sans-serif;letter-spacing:.3px;line-height:1}
-.adventure-line{margin:20px 0 15px;color:#eadfc9;font:19px Georgia,serif;white-space:nowrap;text-shadow:0 2px 5px #000}
+.adventure-line{margin:20px 0 15px;color:#eadfc9;font:19px Georgia,'Gelasio',serif;white-space:nowrap;text-shadow:0 2px 5px #000}
 .platforms{display:flex;justify-content:center;gap:28px}
 .platforms li{display:flex;flex-direction:column;align-items:center;gap:6px;color:#c8c5bd;font:12px Arial,sans-serif;text-shadow:0 1px 5px #000}
 .platforms svg{width:27px;height:27px;fill:none;stroke:#d1c3a7;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 1px 3px #000)}
 
 /* THE HERO POLISH (the user kept all six, 2026-10-25), layout and positions unchanged */
 /* PLAY NOW as a forged gold plate; an ember glow only on hover, focus or press (sleek, never pulsing) */
-.main-play{border:1px solid #7a5420;letter-spacing:.02em;
- background:linear-gradient(180deg,#f6e3ac 0%,#e2c07a 30%,#c39549 58%,#a07032 82%,#8a5f28 100%);
- box-shadow:inset 0 1px 0 #fff4cc,inset 0 0 0 2px #f2d79233,inset 0 -2px 0 #5e3d1599,0 5px 18px #0009;
+/* the plate in the title's carved gold (WEBSITE-BIG-SCREEN-B-AND-POLISH-20261025): the title's warm, saturated faces, a dark
+   carved rim like the letters' edge, a bright bevel along the top; the label pressed in, dark on the light gold */
+.main-play{border:1px solid #2a1503;letter-spacing:.02em;
+ background:linear-gradient(180deg,#fff8c0 0%,#ffeb86 18%,#ffd866 40%,#f2b846 62%,#d4912c 84%,#ab6c1c 100%);
+ box-shadow:inset 0 1px 0 #fffbe0,inset 0 0 0 1px #ffe6a066,inset 0 0 0 2px #7a420e55,inset 0 -2px 0 #5a2c0899,
+  0 2px 0 #1a0c03,0 0 2px #000,0 6px 18px #000a;
  transition:box-shadow .2s,filter .16s,transform .1s}
-.main-play .play-label{letter-spacing:.1em;text-shadow:0 1px 0 #f7e4ae80}
+.main-play .play-label{color:#1e0f03;letter-spacing:.1em;text-shadow:0 1px 0 #ffe9b099}
 .main-play:hover,.main-play:focus-visible,.main-play:active{filter:brightness(1.06);
- box-shadow:inset 0 1px 0 #fff4cc,inset 0 0 0 2px #f2d79233,inset 0 -2px 0 #5e3d1599,0 5px 18px #0009,0 0 22px #ff9a3c66}
-/* "In your browser" in darker bronze small caps */
-.main-play .play-context{color:#5c3b14;font-family:Georgia,serif;font-variant:small-caps;letter-spacing:.08em}
+ box-shadow:inset 0 1px 0 #fffbe0,inset 0 0 0 1px #ffe6a066,inset 0 0 0 2px #7a420e55,inset 0 -2px 0 #5a2c0899,
+  0 2px 0 #1a0c03,0 0 2px #000,0 6px 18px #000a,0 0 22px #ff9a3c66}
+/* "In your browser" in dark bronze small caps */
+.main-play .play-context{color:#3d2006;font-family:Georgia,'Gelasio',serif;font-variant:small-caps;letter-spacing:.08em;text-shadow:0 1px 0 #ffe2a066}
 /* the tagline in a warm parchment italic serif between two short fading gold hairlines */
 .adventure-line{display:flex;align-items:center;justify-content:center;gap:5px;color:#ecdcb9;font-style:italic}
 .adventure-line::before,.adventure-line::after{content:'';flex:none;width:11px;height:var(--hair-w)}
+/* off the phone the tagline is 18 px with 9 px hairlines, so its end keeps about 24 design px from the Warrior's shield (35 screen px
+   at 1920, 47 at 3440; the v9 review: 19 px came within about 18) */
+:root:not(.fit) .adventure-line{font-size:18px}
+:root:not(.fit) .adventure-line::before,:root:not(.fit) .adventure-line::after{width:9px}
 .adventure-line::before{background:linear-gradient(90deg,transparent,#d9b878)}
 .adventure-line::after{background:linear-gradient(90deg,#d9b878,transparent)}
-/* the platform icons as one slim gold-line set, evenly spaced, hairlines between, small-caps parchment labels */
+/* the platform icons: BRAIN's cut-gold set (the user's pick, WEBSITE-ICONS-02-CUT-GOLD-20261026), solid gold shapes with the
+   screens and buttons cut out, evenly spaced, hairlines between, small-caps parchment labels */
 .platforms{gap:0}
-.platforms li{padding:0 14px;color:#e3d3b0;font-family:Georgia,serif;font-variant:small-caps;letter-spacing:.08em}
+.platforms li{padding:0 14px;color:#e3d3b0;font-family:Georgia,'Gelasio',serif;font-variant:small-caps;letter-spacing:.08em}
 .platforms li+li{border-left:var(--hair-w) solid;border-image:linear-gradient(transparent,#d9b87866 20%,#d9b87866 80%,transparent) 1}
-.platforms svg{stroke:#dcbd7c;stroke-width:1.3}
+.platforms svg{fill:url(#cut-gold);fill-rule:evenodd;stroke:#e4c68c;stroke-width:.35;stroke-linejoin:miter}
 /* the title lifted off the red sky: a soft dark halo behind the letters */
 .hero-halo{display:block;position:absolute;left:2%;top:13%;width:46%;height:32%;pointer-events:none;
  background:radial-gradient(ellipse at 48% 52%,#05080cb0 0%,#05080c66 45%,transparent 72%)}
@@ -120,8 +190,6 @@ main{width:min(1086px,100%);margin:0 auto;background:var(--bg)}
  background:radial-gradient(circle at 35% 30%,#d04a3a 0,#7a1210 32%,#4a0707 100%);transform-origin:50% 0;
  animation:drip 72s linear infinite}
 .drop.d1{left:26.9%;top:96.4%;--fall:20px;animation-delay:1.5s}
-/* on phones the drop keeps a readable size, so the one over PLAY NOW falls a shorter way and never reaches the button */
-.fit .drop.d1{--fall:7px}
 .drop.d2{left:72.05%;top:90.2%;--fall:25px;animation-delay:28.5s}
 .drop.d3{left:98.3%;top:95.2%;--fall:24px;animation-delay:46.5s}
 @keyframes drip{0%{opacity:0;transform:translateY(0) scale(.2)}
@@ -141,7 +209,7 @@ main{width:min(1086px,100%);margin:0 auto;background:var(--bg)}
    engraved edge, TERROR glowing, and a very slow 7 s glow "breath" (no flicker; none with reduced motion); framed by fading
    hairlines: — WHO FACES THE TERROR? — */
 .champions h2{display:flex;align-items:center;justify-content:center;gap:14px;margin:5px 0 12px;
- font:500 max(36px,calc(20px / var(--z)))/1.15 'Cinzel',Georgia,serif;letter-spacing:.06em;text-transform:uppercase;
+ font:500 max(36px,calc(20px / var(--z)))/1.15 'Cinzel',Georgia,'Gelasio',serif;letter-spacing:.06em;text-transform:uppercase;
  filter:drop-shadow(0 1px 0 #000d) drop-shadow(0 0 1px #000a) drop-shadow(0 0 7px #b0200f66);animation:breath 7s ease-in-out infinite}
 @keyframes breath{0%,100%{filter:drop-shadow(0 1px 0 #000d) drop-shadow(0 0 1px #000a) drop-shadow(0 0 6px #b0200f55)}
  50%{filter:drop-shadow(0 1px 0 #000d) drop-shadow(0 0 1px #000a) drop-shadow(0 0 12px #d2301a88)}}
@@ -154,15 +222,26 @@ main{width:min(1086px,100%);margin:0 auto;background:var(--bg)}
  -webkit-background-clip:text;background-clip:text;color:transparent}
 .champions h2 .terror{filter:drop-shadow(0 0 5px #ff3b1a88) drop-shadow(0 -1px .5px #ffbe7a99)}
 /* the subtitle: ONE line of gold small caps with diamond separators (the user), sized by the design so it never wraps */
-.champions-goal{margin:0 auto 26px;color:var(--gold-soft);font:19px/1.5 Georgia,serif;font-variant:small-caps;letter-spacing:.1em;
+.champions-goal{margin:0 auto 26px;color:var(--gold-soft);font:19px/1.5 Georgia,'Gelasio',serif;font-variant:small-caps;letter-spacing:.1em;
  white-space:nowrap;text-align:center}
 .champions-goal .sep{margin:0 .9em;color:#d9b878;font-size:.62em;vertical-align:.18em}
-.champions-goal .br,.champions-goal .sep.end{display:none}
+.champions-goal .br{display:none}
 .row{position:relative}
 /* the ring: clipped at the row's edges; a sideways thumb turns it, up and down stays the page's scroll; while it turns, the
    cards are placed absolutely and moved by transform only (site.js) */
 .squad{position:relative;display:flex;flex-wrap:wrap;align-items:center;min-height:380px;overflow-x:clip;touch-action:pan-y}
 .squad.ring .card{position:absolute;margin:0;flex:none}
+/* a card open on a screen too short for the row and the whole panel: the five cards shrink in place, keeping their shapes
+   (--row-s from site.js); the panel below keeps its size */
+.champions.compact .squad{justify-content:center;min-height:calc(380px * var(--row-s))}
+.champions.compact .card{flex:0 0 calc(192px * var(--row-s));height:calc(315px * var(--row-s))}
+.champions.compact .card:nth-child(2),.champions.compact .card:nth-child(4){height:calc(345px * var(--row-s))}
+.champions.compact .card:nth-child(3){flex:0 0 calc(231px * var(--row-s));height:calc(380px * var(--row-s))}
+.champions.compact .row-arrow{top:calc(190px * var(--row-s))}
+/* the arrows keep their place beside the outer cards (the v9 review: they floated far off once the row shrank): the row is
+   1010 px and the shrunk cards 999 px x --row-s, centred */
+.champions.compact .row-arrow.prev{left:calc((1010px - 999px * var(--row-s)) / 2 - 34px)}
+.champions.compact .row-arrow.next{right:calc((1010px - 999px * var(--row-s)) / 2 - 34px)}
 .squad .card,.squad img{-webkit-touch-callout:none;-webkit-user-drag:none;user-select:none;-webkit-user-select:none}
 /* ‹ ›: slim gold-line arrows in the gutters beside the row, clear of the cards; an invisible 44 px tap area each */
 .row-arrow{position:absolute;top:190px;z-index:4;width:26px;height:64px;padding:0;border:0;background:none;transform:translateY(-50%);color:#d9b878}
@@ -170,6 +249,17 @@ main{width:min(1086px,100%);margin:0 auto;background:var(--bg)}
 .row-arrow.next{right:-34px}
 .row-arrow svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 1px 2px #000)}
 .row-arrow:hover{color:#fff1d0}
+/* a phone held upright: the row arrows in the gutters beside the cards, as on the PC (the v9 review: they overlapped the
+   outer cards), on a faint dark backing (v14: the darker one read as a smudge); about 11 x 36 px with a bolder, brighter line (the
+   v10 review: at 9 x 26 they were barely visible). Their tap areas stay 44 px */
+.fit .row-arrow{width:calc(11px / var(--z));height:calc(36px / var(--z));border-radius:40%;color:#ecca86;
+ background:radial-gradient(closest-side,#05080c4d,transparent)}
+.fit .row-arrow svg{stroke-width:2.6}
+/* v13 (the v12 review: 2-3 px from the screen's edge and the cards): each arrow about 8 px from the screen's edge and 8 px
+   from the cards, the row drawn in by 11 px a side to make the room */
+.fit .row-arrow.prev{left:calc(6.9px / var(--z) - var(--gutter))}
+.fit .row-arrow.next{right:calc(6.9px / var(--z) - var(--gutter))}
+.fit .squad{margin:0 calc(11.2px / var(--z))}
 .card{position:relative;flex:1;min-width:0;height:315px;overflow:hidden;background:#121c24;border:1px solid #6c5d4144}
 .card:nth-child(2),.card:nth-child(4){height:345px}
 /* the centre slot (the Warrior's at first): a selected Champion glides into it (site.js) */
@@ -199,8 +289,20 @@ main{width:min(1086px,100%);margin:0 auto;background:var(--bg)}
 .champion-info{flex:0 0 100%;margin-top:16px}
 .ci-card{position:relative;isolation:isolate;min-height:290px;overflow:hidden;border:var(--hair-w) solid var(--hair-c);
  background:radial-gradient(ellipse at 78% 30%,#24303a,#0e151b 70%)}
-.ci-art{position:absolute;z-index:-1;top:0;right:0;width:48%;height:100%;object-fit:cover;object-position:center 12%;
- -webkit-mask-image:linear-gradient(90deg,transparent,#000 42%);mask-image:linear-gradient(90deg,transparent,#000 42%)}
+/* the open card's portrait shows the WHOLE champion, head to feet, with a little room above the head, on every screen
+   (one design): the card's own picture, uncropped (285 x 490), with the same room above the head and under the feet
+   (5% of the panel each). The user, 2026-10-25:
+   the wide PC crop looked "very, very zoomed in" on a widescreen; they want to see the whole champion.
+   Framed on purpose like a card of the row (the v9 review: feathered, its painted backdrop read as a brown box): the gold
+   hairline of the chosen card and a soft shadow, no fading edges.
+   The picture sits on a dark mat inside the frame, like a framed print, so the hair and the sandals get room (the v10
+   review: they touched the frame; v11's blurred bands smeared): 7% of the width above and below, 4% at the sides (the
+   frame's shape is the picture's plus that mat; in the frame's height, 4.07% above and below), with a faint gold line at the picture's own edge */
+.ci-art{position:absolute;z-index:-1;top:5%;right:calc(max(36px,calc(22px / var(--z))) + 36px);height:90%;aspect-ratio:5808/10000;overflow:hidden;
+ background:#0a0f13;border:max(1px,calc(1px / var(--z))) solid #c6a663aa;box-shadow:0 0 0 max(1px,calc(1px / var(--z))) #0e151b,0 6px 26px #000c}
+.ci-art img{position:absolute;left:4%;top:4.07%;width:92%;height:auto;aspect-ratio:285/490;outline:max(1px,calc(1px / var(--z))) solid #c6a66340}
+/* on a phone the portrait sits under the close button with room between them */
+.fit .ci-art{top:calc(44px / var(--z));height:calc(95% - 44px / var(--z));right:calc(10px / var(--z))}
 .ci-close{position:absolute;z-index:1;top:10px;right:12px;width:max(36px,calc(22px / var(--z)));height:max(36px,calc(22px / var(--z)));padding:0;
  border:1px solid #c6a66366;border-radius:50%;background:#0e151bcc;color:#e9c97e;font:max(20px,calc(14px / var(--z)))/1 Arial,sans-serif}
 .ci-close:hover{background:#31271a;color:#fff1d3}
@@ -209,14 +311,17 @@ main{width:min(1086px,100%);margin:0 auto;background:var(--bg)}
 .ci-badge{display:inline-flex;align-items:center;gap:.45em;padding:.3em .75em;border:1px solid #c6a66388;background:#31271a99;
  color:#e9c97e;font:max(12px,calc(10px / var(--z))) Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase}
 .ci-body h3{margin:14px 0 4px;color:#eee9df;font-size:max(36px,calc(20px / var(--z)));line-height:1.1}
-.ci-role{color:var(--gold-soft);font:max(18px,calc(12px / var(--z))) Georgia,serif;font-variant:small-caps;letter-spacing:.08em}
+.ci-role{color:var(--gold-soft);font:max(18px,calc(12px / var(--z))) Georgia,'Gelasio',serif;font-variant:small-caps;letter-spacing:.08em}
 .ci-desc{margin-top:14px!important;color:#d4d6d5;font:max(16px,calc(13px / var(--z)))/1.55 Arial,sans-serif}
 .ci-rule{margin-top:14px!important;color:#aab0b2;font:max(15px,calc(12px / var(--z)))/1.5 Arial,sans-serif}
 .ci-play{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.25em;margin-top:20px;
- width:max(220px,calc(108px / var(--z)));height:max(70px,calc(46px / var(--z)));border:1px solid #f3db9a;border-radius:2px;
- background:linear-gradient(145deg,#e0c78d,#b78e45);color:#211a10;text-decoration:none;box-shadow:inset 0 0 0 3px #73501c33,0 5px 18px #0009}
-.ci-play .play-label{font-size:max(21px,calc(13px / var(--z)))}
-.ci-play:hover{filter:brightness(1.12)}
+ width:max(220px,calc(108px / var(--z)));height:max(70px,calc(46px / var(--z)));border:1px solid #2a1503;border-radius:2px;
+ background:linear-gradient(180deg,#fff8c0 0%,#ffeb86 18%,#ffd866 40%,#f2b846 62%,#d4912c 84%,#ab6c1c 100%);color:#1e0f03;text-decoration:none;
+ box-shadow:inset 0 1px 0 #fffbe0,inset 0 0 0 1px #ffe6a066,inset 0 0 0 2px #7a420e55,inset 0 -2px 0 #5a2c0899,0 2px 0 #1a0c03,0 0 2px #000,0 6px 18px #000a}
+/* the panel's PLAY NOW is the same carved-gold plate as the hero's */
+.ci-play .play-label{font-size:max(21px,calc(13px / var(--z)));letter-spacing:.1em;text-shadow:0 1px 0 #ffe9b099}
+.ci-play .play-context{color:#3d2006;font-family:Georgia,'Gelasio',serif;font-variant:small-caps;letter-spacing:.08em;text-shadow:0 1px 0 #ffe2a066}
+.ci-play:hover{filter:brightness(1.06)}
 
 /* Terror awaits: three pictures in one row */
 /* a hairline between the Champions and Terror awaits: the two sections share one dark ground */
@@ -225,29 +330,32 @@ main{width:min(1086px,100%);margin:0 auto;background:var(--bg)}
  background:linear-gradient(90deg,transparent,var(--hair-c) 14%,var(--hair-c) 86%,transparent)}
 /* the section label: centred gold small caps between two short fading hairlines (the user: — TERROR AWAITS —) */
 .gameplay h2{display:flex;align-items:center;justify-content:center;gap:16px;margin:0 0 16px;color:var(--gold);text-shadow:0 0 6px #b0200f66;
- font:500 max(16px,calc(10.5px / var(--z))) 'Cinzel',Georgia,serif;text-transform:uppercase;letter-spacing:.22em}
+ font:500 max(16px,calc(10.5px / var(--z))) 'Cinzel',Georgia,'Gelasio',serif;text-transform:uppercase;letter-spacing:.22em}
 .gameplay h2::before,.gameplay h2::after{content:'';width:56px;height:var(--hair-w)}
 .gameplay h2::before{background:linear-gradient(90deg,transparent,#d9b878)}
 .gameplay h2::after{background:linear-gradient(90deg,#d9b878,transparent)}
 /* a quiet hairline between the three, fading at its ends (the user: "a vague border that kinda separates them") */
-.teasers{display:grid;grid-template-columns:repeat(3,1fr)}
-.teasers li{min-width:0;padding:0 18px}
-.teasers li:first-child{padding-left:0}
-.teasers li:last-child{padding-right:0}
-.teasers li+li{border-left:var(--hair-w) solid;border-image:linear-gradient(transparent,var(--hair-c) 14%,var(--hair-c) 86%,transparent) 1}
+.teasers{display:grid;grid-template-columns:repeat(3,1fr);column-gap:36px}
+.teasers li{position:relative;min-width:0}
+.teasers li+li::before{content:'';position:absolute;top:0;bottom:0;left:calc(-18px - var(--hair-w) / 2);width:var(--hair-w);
+ background:linear-gradient(transparent,var(--hair-c) 14%,var(--hair-c) 86%,transparent)}
 /* each picture in its frame: on hover (PC) or press (phone) it brightens a touch and zooms in its frame, then eases back */
-.teaser-frame{position:relative;height:190px;overflow:hidden;background:#1a252b}
+/* the three the same width, each framed by a faint gold hairline so a dark picture's edge doesn't fade into the page (the v13
+   review) */
+.teaser-frame{position:relative;height:190px;overflow:hidden;background:#1a252b;box-shadow:0 0 0 var(--hair-w) #c3a46f40}
 .teasers img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease-out,filter .4s ease-out}
 .teasers li.pressed img{transform:scale(1.035);filter:brightness(1.08)}
 @media (hover:hover){.teasers li:hover img{transform:scale(1.035);filter:brightness(1.08)}}
 /* THE CAPTIONS sit inside their pictures (the user: part of their teasers): Cinzel capitals over a dark fade, lit by each
-   scene's own light (ember red, cold blue, warm gold) with the key word brightest; calmer than the heading: no cracks, no breath */
+   scene's own light (ember red, cold blue, warm gold) with the key word brightest; calmer than the heading: no cracks, no breath.
+   Each sits on the same soft dark band, so it reads the same on any picture (the v13 review: per-tile halos read unevenly) */
 .teaser-frame::after{content:'';position:absolute;inset:auto 0 0;height:62%;pointer-events:none;
  background:linear-gradient(transparent,#06090cd9 78%,#06090cf2)}
-.teasers h3{position:absolute;z-index:1;left:0;right:0;bottom:0;margin:0;padding:0 12px max(10px,calc(4px / var(--z)));
- font:600 max(19px,calc(9.5px / var(--z)))/1.15 'Cinzel',Georgia,serif;letter-spacing:.06em;text-transform:uppercase;
- color:var(--tone-soft);text-shadow:0 1px 2px #000,0 0 10px var(--tone-glow)}
-.teasers h3 b{font-weight:700;color:var(--tone);text-shadow:0 1px 2px #000,0 0 12px var(--tone-glow),0 0 22px var(--tone-glow)}
+.teasers h3{position:absolute;z-index:1;left:0;right:0;bottom:0;margin:0;padding:1.4em 12px max(10px,calc(4px / var(--z)));
+ background:linear-gradient(#06090c00,#06090ca6 38%,#06090cc7);
+ font:600 max(19px,calc(9.5px / var(--z)))/1.15 'Cinzel',Georgia,'Gelasio',serif;letter-spacing:.06em;text-transform:uppercase;
+ color:var(--tone-soft);text-shadow:0 1px 2px #000}
+.teasers h3 b{font-weight:700;color:var(--tone);text-shadow:0 1px 2px #000,0 0 10px var(--tone-glow)}
 .teasers .ember{--tone:#ffb38a;--tone-soft:#f0cdb6;--tone-glow:#ff4a1a99}
 .teasers .cold{--tone:#d8eeff;--tone-soft:#c3d6e6;--tone-glow:#4aa8ff99}
 .teasers .gold{--tone:#ffe2a0;--tone-soft:#ecdcb4;--tone-glow:#ffb43a99}
@@ -287,7 +395,7 @@ main{width:min(1086px,100%);margin:0 auto;background:var(--bg)}
 .notes li{position:relative;margin:.45em 0;padding-left:1.2em}
 .notes li::before{content:'';position:absolute;left:0;top:.6em;width:.4em;height:.4em;background:#d0af70;transform:rotate(45deg)}
 .post{margin:0 0 14px}
-.post h4{margin:0;color:#eee9df;font:1.4em Georgia,serif}
+.post h4{margin:0;color:#eee9df;font:1.4em Georgia,'Gelasio',serif}
 .post .date{margin:.2em 0 0;color:#bba472;font-size:.85em}
 details{margin:8px 0 0;border-top:1px solid #b5955c40;padding-top:6px}
 summary{min-height:var(--tap);display:flex;align-items:center;color:var(--gold);cursor:pointer}
@@ -307,16 +415,78 @@ summary{min-height:var(--tap);display:flex;align-items:center;color:var(--gold);
 /* A phone held upright fills the width with the approved spacing (the user rejected both the squeeze and the side bars);
    height comes back from compact headings and slimmer news cards, and the rest scrolls a little. */
 /* phones: the small text gets readable floors (text minimums may adapt; the layout doesn't). The subtitle takes two
-   balanced lines: UNLOCK EVERY CHAMPION ◆ CONQUER EVERY TRIAL / ◆ RACE TO RESET THE LADDER ◆ */
-.fit .champions h2::before,.fit .champions h2::after{width:28px}
-.fit .champions h2{gap:8px;letter-spacing:.03em}
-.fit .champions-goal{font-size:max(19px,calc(11.5px / var(--z)));letter-spacing:.06em;line-height:1.45}
+   lines, UNLOCK EVERY CHAMPION ◆ CONQUER EVERY TRIAL / RACE TO RESET THE LADDER: no diamond starts or ends a line (the
+   separator at the break keeps only its hidden full stop) */
+.fit .champions h2::before,.fit .champions h2::after{width:20px}
+.fit .champions h2{gap:16px;letter-spacing:.03em}
+.fit .champions-goal{font-size:max(19px,calc(12px / var(--z)));letter-spacing:.06em;line-height:1.45}
 .fit .champions-goal .br{display:block}
-.fit .champions-goal .sep.end{display:inline}
-.fit .champions-goal .sep.end{margin-right:0}
-.fit .main-play .play-context{font-size:max(13px,calc(8px / var(--z)))}
-/* the tagline keeps the design size: any larger and it reaches the Warrior's shield on a 360 px phone */
-.fit .platforms li{padding:0 5px;font-size:max(12px,calc(7px / var(--z)))}
-.fit .caption{padding-left:2px;padding-right:2px}
-.fit .caption .name{font-size:max(23px,calc(8.5px / var(--z)));letter-spacing:-.01em}
+.fit .champions-goal .sep.at-br{margin:0}
+.fit .champions-goal .sep.at-br [aria-hidden]{display:none}
+/* the hero's text on a phone is version C (WEBSITE-PHONE-TEXT-C-20261026): the fewest words, the largest text, in the same
+   composition. PLAY NOW without "In your browser" (both plates), the platform icons without their words (the list keeps its
+   spoken label), and an 11 px tagline on two lines, "Your adventure." over "Your way." between its fading hairlines (12 px
+   came within 5 px of the Warrior's shield). The cluster sits 10 design px higher than on the PC and its plate is a little
+   slimmer, so the tagline and the plate's corner clear the shield; the T's drop then hangs without falling (it would land
+   behind the plate) */
+.fit .hero-actions{top:320px}
+.fit .drop.d1{--fall:0px}
+/* the plate a little shorter with a little air under the title, and its label 12.5 px with 6 px a side at 360. Where 260 design
+   px is too narrow for that it grows to the right only, so its left edge keeps the PC's place 7 design px left of the title's
+   "OF" (the v14 review: it stood out 19 at 360) */
+.fit .main-play{z-index:1;align-self:flex-start;width:max(260px,calc(88px / var(--z)));height:calc(34px / var(--z))}
+.fit .main-play .play-label{font-size:calc(12.5px / var(--z));letter-spacing:.02em;white-space:nowrap}
+.fit .main-play .play-context,.fit .ci-play .play-context{display:none}
+.fit .ci-play .play-label{font-size:calc(13px / var(--z));white-space:nowrap}
+/* the tagline sits 9 design px left of the plate's centre (about 3 real px) and a touch tighter, for more
+   room from the shield (the v10 review: about 9 px) */
+.fit .adventure-line{position:relative;left:-9px;display:block;margin:calc(5px / var(--z)) auto calc(5px / var(--z));font-size:calc(11px / var(--z));
+ line-height:1.3;letter-spacing:-.01em;white-space:normal;text-align:center}
+/* its fading hairlines reach out to the block's own edges, as they close the whole line on the PC: "Your adventure." sets the
+   width and the hairlines run from its ends in to "Your way." (the v14 review: short hairlines beside "Your way." alone read as
+   a wrap accident; hairlines outside the block would touch the Warrior's shield at 360) */
+.fit .adventure-line{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;column-gap:calc(4px / var(--z))}
+.fit .adventure-line span{display:block;white-space:nowrap}
+.fit .adventure-line span:first-child{grid-column:1 / 4;grid-row:1}
+.fit .adventure-line span+span{grid-column:2;grid-row:2}
+.fit .adventure-line::before,.fit .adventure-line::after{grid-row:2;width:auto;height:calc(1px / var(--z))}
+.fit .adventure-line::before{grid-column:1}
+.fit .adventure-line::after{grid-column:3}
+/* the icons at 16 px with a stroke that stays over 1 real px (the v10 review: at 14 px and 0.5 px they read faint) */
+.fit .platforms li{gap:0;padding:0 calc(5px / var(--z));font-size:0;letter-spacing:0}
+.fit .platforms svg{width:calc(16px / var(--z));height:calc(16px / var(--z))}
+/* the cards' captions and the opened card's text at the readable minimums, 12-13 px (ONE-DESIGN-EVERY-SCREEN-20261025) */
+/* the names at 12 px, a little tighter, and the Unlocked line too */
+.fit .caption{padding-left:0;padding-right:0}
+.fit .caption .name{font-size:calc(12px / var(--z));letter-spacing:-.05em}
+/* E (decided for the user under ONE-DESIGN-EVERY-SCREEN, 2026-10-26): on a phone held upright five 12 px names can't all have
+   room (at 360 px a side card is about 60 px; Oathkeeper is 56 in Georgia and in Gelasio, its stand-in), so the four
+   side cards show only their portrait and lock and the centre card its name and Locked/Unlocked line; a name appears as its
+   card settles in the centre. Each card's button keeps its name in its label. PC and phones held sideways show every name */
+.fit .card:not(:nth-child(3)) .caption .name{display:none}
+.fit .card:not(:nth-child(3)) .caption .state{font-size:0;gap:0}
+.fit .caption .state{gap:.1em;letter-spacing:-.03em;margin-top:calc(3px / var(--z));font-size:calc(12px / var(--z))}
+/* the lock a little smaller and closer, so the centre card's "Unlocked" keeps 6 px a side at 360 (the v14 review: about 4) and
+   6 px below it; the side cards' locks the same size */
+.fit .caption{padding-bottom:calc(6px / var(--z))}
+.fit .caption .lock{width:calc(9.2px / var(--z));height:calc(10.7px / var(--z))}
+.fit .ci-badge{font-size:calc(12px / var(--z));letter-spacing:.1em}
+.fit .ci-role{font-size:calc(13px / var(--z))}
+.fit .ci-rule{color:#c2c7c8;font-size:calc(13px / var(--z))}
+/* the close X 9 px in from the card's corner, so its 44 px tap area fits inside the card (which clips) */
+.fit .ci-close{top:calc(9px / var(--z));right:calc(9px / var(--z));width:calc(28px / var(--z));height:calc(28px / var(--z));font-size:calc(18px / var(--z))}
+/* the opened card sits 14 px under the row, like the PC's air (16 design px was 6 px on a phone) */
+.fit .champion-info{margin-top:calc(14px / var(--z))}
+/* the phone's remaining small text at 12 px: the subtitle, TERROR AWAITS, the picture captions and the patch notes' tag */
+.fit .gameplay h2,.fit .teasers h3,.fit .tag{font-size:calc(12px / var(--z))}
+/* the tiles' captions with real side room on a phone: 8 px a side and less tracking (the v13 review: CORRUPTION nearly filled
+   its tile at 360) */
+.fit .teasers h3{padding-left:calc(8px / var(--z));padding-right:calc(8px / var(--z));letter-spacing:0}
+/* TERROR AWAITS's flanking dashes a whole pixel tall on a phone: at .75 px the 390 px page dropped them (the v12 review) */
+.fit .gameplay h2::before,.fit .gameplay h2::after{flex:none;height:calc(1px / var(--z))}
+/* the Read update tap area rises from the card's bottom edge instead of past it (the card clips) */
+.fit .news-card .read.tap-pad::before{top:auto;bottom:-15px;transform:translateX(-50%)}
+/* the row arrows' 44 px tap areas start at the screen's edges (the row clips there) and reach in over the outer cards' edge */
+.fit .row-arrow.prev::before{left:calc(-1px / var(--z));transform:translateY(-50%)}
+.fit .row-arrow.next::before{left:auto;right:calc(-1px / var(--z));transform:translateY(-50%)}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}.title-glow{animation:none;opacity:.55}.title-drops{display:none}.news-card.arrive::after{animation:none;opacity:1}.champions h2{animation:none}.teasers li img,.card img,.news-art{transform:none!important}}
